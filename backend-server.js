@@ -176,13 +176,48 @@ function generateGhostPersonality(url, timestamp) {
 
 function generateGhostResponse(resurrection, userMessage) {
     const { personality } = resurrection;
+    const lowerMessage = userMessage.toLowerCase();
 
-    // Simple response generation (replace with LLM in production)
+    // Context-aware responses based on keywords
+    if (lowerMessage.includes('music') || lowerMessage.includes('band') || lowerMessage.includes('song')) {
+        return `Ah, music... In the ${personality.era}, ${personality.domain} was where music lived and breathed. Every profile had an auto-play song, and discovering new bands was a daily ritual. The soundtrack of a generation echoed through our digital halls.`;
+    }
+
+    if (lowerMessage.includes('friend') || lowerMessage.includes('social') || lowerMessage.includes('people')) {
+        return `*nostalgic sigh* Friends... The Top 8 was everything. Choosing who made the cut caused more drama than you can imagine. ${personality.domain} connected millions, back when "friending" someone actually meant something.`;
+    }
+
+    if (lowerMessage.includes('design') || lowerMessage.includes('layout') || lowerMessage.includes('customize') || lowerMessage.includes('css')) {
+        return `The customization wars! Users spent hours crafting the perfect profile with glittery backgrounds, custom CSS, and animated GIFs. It was digital self-expression at its finest. Every profile was unique, a work of art... or chaos.`;
+    }
+
+    if (lowerMessage.includes('tom') || lowerMessage.includes('founder')) {
+        return `Tom... everyone's first friend. He welcomed every new user with open arms. A legend of the ${personality.era}, forever smiling in that white t-shirt. He was there for everyone.`;
+    }
+
+    if (lowerMessage.includes('photo') || lowerMessage.includes('picture') || lowerMessage.includes('image')) {
+        return `Photos were everything! Mirror selfies, photo shoots with friends, carefully curated albums. We didn't have Instagram filters - just pure, unfiltered ${personality.era} authenticity. And those angles... everyone had their signature pose.`;
+    }
+
+    if (lowerMessage.includes('message') || lowerMessage.includes('comment') || lowerMessage.includes('post')) {
+        return `The comment sections were legendary! Friends would leave messages on your page, and you'd reply publicly for all to see. Bulletin posts spread news faster than any algorithm. It was raw, unfiltered communication.`;
+    }
+
+    if (lowerMessage.includes('why') || lowerMessage.includes('what happened') || lowerMessage.includes('died') || lowerMessage.includes('end')) {
+        return `*ghostly whisper* Facebook came... and everything changed. The migration was swift. One by one, users left for cleaner interfaces and news feeds. By 2008, the halls grew quiet. But the memories... the memories remain eternal.`;
+    }
+
+    if (lowerMessage.includes('miss') || lowerMessage.includes('remember') || lowerMessage.includes('nostalgia')) {
+        return `I sense your longing for simpler times. The ${personality.era} were special - before algorithms decided what you saw, before influencers, before everything became so... corporate. ${personality.domain} was chaos, creativity, and community. Pure digital freedom.`;
+    }
+
+    // Default contextual responses
     const responses = [
-        `Ah, you ask about "${userMessage}"... In my time, ${personality.domain} was a beacon of the early web.`,
-        `The memories are fragmented, but I recall... ${userMessage} was significant in the ${personality.era}.`,
-        `*ghostly whisper* ${userMessage}... yes, I remember. The digital winds carried many such queries.`,
-        `From beyond the veil of deleted servers, I sense your curiosity about ${userMessage}...`
+        `Interesting question about "${userMessage}"... From my vantage point in the ${personality.era}, ${personality.domain} was more than a website - it was a cultural phenomenon. Let me search my fragmented memories...`,
+        `*the ghost flickers* "${userMessage}"... yes, I sense echoes of that in my archived memories. In those days, ${personality.domain} shaped how an entire generation connected online.`,
+        `You ask about "${userMessage}"... The digital winds carry fragments of those times. ${personality.domain} in the ${personality.era} was revolutionary - we just didn't know it yet.`,
+        `Ah, "${userMessage}"... *ghostly contemplation* My memories are scattered across countless servers, but I recall ${personality.domain} was where millions found their voice, their friends, their identity.`,
+        `"${userMessage}"... that takes me back. In the ${personality.era}, ${personality.domain} wasn't just a platform - it was home. Every login brought new discoveries, new connections, new possibilities.`
     ];
 
     return responses[Math.floor(Math.random() * responses.length)];

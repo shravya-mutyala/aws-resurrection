@@ -20,12 +20,46 @@ body {
     background: var(--deep-black);
     color: var(--phosphor-green);
     overflow-x: hidden;
+    position: relative;
+}
+
+/* Floating Ghost Emojis Background - Full Page */
+body::before {
+    content: '👻 💀 🪦 👻 💀 🪦 👻 💀 🪦 👻 💀 🪦 👻 💀 🪦 👻 💀 🪦 👻 💀 🪦 👻 💀 🪦 👻 💀 🪦 👻 💀 🪦 👻 💀 🪦 👻 💀 🪦 👻 💀 🪦 👻 💀 🪦 👻 💀 🪦 👻 💀 🪦 👻 💀 🪦 👻 💀 🪦 👻 💀 🪦 👻 💀 🪦';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    font-size: 3.5rem;
+    opacity: 0.15;
+    z-index: 0;
+    pointer-events: none;
+    word-wrap: break-word;
+    line-height: 6rem;
+    letter-spacing: 2rem;
+    animation: ghost-float 60s linear infinite;
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
 }
 
 .app {
     min-height: 100vh;
     position: relative;
     padding: 2rem;
+    z-index: 1;
+}
+
+@keyframes ghost-float {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+
+    100% {
+        transform: translate(-10%, -10%) rotate(5deg);
+    }
 }
 
 /* CRT Effects */
@@ -37,7 +71,7 @@ body {
     height: 100%;
     background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
     pointer-events: none;
-    z-index: 1000;
+    z-index: 2;
 }
 
 .scanlines {
@@ -52,7 +86,7 @@ body {
             transparent 1px,
             transparent 2px);
     pointer-events: none;
-    z-index: 999;
+    z-index: 2;
     animation: scanline-move 8s linear infinite;
 }
 
@@ -396,6 +430,10 @@ body {
     font-size: 0.9rem;
     border-top: 1px solid var(--phosphor-green);
     margin-top: 3rem;
+    position: relative;
+    z-index: 10;
+    background: var(--deep-black);
+    box-shadow: 0 -20px 40px var(--deep-black);
 }
 
 .footer p {
