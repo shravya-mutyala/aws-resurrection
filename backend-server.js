@@ -45,6 +45,15 @@ const WAYBACK_SNAPSHOT_URL = 'http://web.archive.org/web';
 // RESURRECTION ENDPOINTS
 // ============================================
 
+// Health check endpoint
+app.get('/health', (req, res) => {
+    res.json({
+        status: 'alive',
+        message: 'The resurrection engine awakens...',
+        timestamp: new Date().toISOString()
+    });
+});
+
 // Initiate resurrection of a dead URL
 app.post('/api/resurrect', async (req, res) => {
     const { url, timestamp } = req.body;
