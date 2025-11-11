@@ -8,7 +8,30 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-app.use(cors());
+// CORS configuration for local and production
+const allowedOrigins = [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    process.env.FRONTEND_URL,
+    // Add your Amplify domain here after deployment
+    // 'https://your-app.amplifyapp.com'
+].filter(Boolean);
+
+app.use(cors({
+    origin: (origin, callback) => {
+        // Allow requests with no origin (mobile apps, Postman, etc.)
+        if (!origin) return callback(null, true);
+
+        // Check if origin is in allowed list or matches Amplify pattern
+        if (allowedOrigins.includes(origin) || origin.includes('.amplifyapp.com')) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true
+}));
+
 app.use(express.json());
 
 // In-memory storage for demo (replace with DynamoDB in production)

@@ -55,14 +55,145 @@ The séance chamber will be available at: http://localhost:5173
 4. Select the `chrome_extension/` folder from this project
 5. The extension icon will appear in your toolbar
 
-## AWS Deployment (Production)
+## AWS Amplify Deployment (Recommended)
 
 ### Prerequisites
 - AWS Account with appropriate permissions
-- AWS CLI configured with credentials
-- AWS CDK installed globally: `npm install -g aws-cdk`
+- GitHub repository (or GitLab/Bitbucket)
+- AWS CLI configured: `aws configure`
 
-### Step 1: Set Up Infrastructure
+### Architecture Overview
+```
+Frontend (React/Vite) → AWS Amplify Hosting
+Backend (Express API) → AWS App Runner or Lambda
+Infrastructure → AWS CDK (S3, DynamoDB)
+```
+
+### Step 1: Prepare Your Repository
+
+```bash
+# Ensure your code is committed and pushed to GitHub
+git add .
+git commit -m "Prepare for Amplify deployment"
+git push origin main
+```
+
+### Step 2: Deploy Backend to AWS App Runner
+
+Create `apprunner.yaml` in project root:
+
+```yaml
+version: 1.0
+runtime: nodejs18
+build:
+  commands:
+    build:
+      - npm install
+run:
+  command: node backend-server.js
+  network:
+    port: 3001
+    env: PORT
+  env:
+    - name: PORT
+      value: "3001"
+```
+
+Deploy via AWS Console:
+1. Go to AWS App Runner console
+2. Click "Create service"
+3. Source: "Source code repository" → Connect GitHub
+4. Select your repository and branch
+5. Build settings: Use `apprunner.yaml`
+6. Service name: `echoes-backend`
+7. Add environment variables (see Step 4)
+8. Click "Create & deploy"
+9. Copy the service URL (e.g., `https://xxx.us-east-1.awsapprunner.com`)
+
+### Step 3: Deploy Frontend to AWS Amplify
+
+#### Option A: Via AWS Console (Easiest)
+
+1. Go to AWS Amplify console
+2. Click "New app" → "Host web app"
+3. Connect your GitHub repository
+4. Select repository and branch (main)
+5. Configure build settings:
+
+```yaml
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - cd frontend
+        - npm ci
+    build:
+      commands:
+        - npm run build
+  artifacts:
+    baseDirectory: frontend/dist
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - frontend/node_modules/**/*
+```
+
+6. Add environment variable:
+   - Key: `VITE_API_URL`
+   - Value: Your App Runner URL from Step 2
+7. Click "Save and deploy"
+
+#### Option B: Via Amplify CLI
+
+```bash
+# Install Amplify CLI
+npm install -g @aws-amplify/cli
+
+# Initialize Amplify in your project
+amplify init
+
+# Add hosting
+amplify add hosting
+
+# Select: "Hosting with Amplify Console"
+# Select: "Continuous deployment"
+
+# Publish
+amplify publish
+```
+
+### Step 4: Configure Environment Variables
+
+#### Backend (App Runner)
+Add these in App Runner console → Configuration → Environment variables:
+
+```bash
+OPENAI_API_KEY=your_key_here
+# OR
+ANTHROPIC_API_KEY=your_key_here
+
+PINECONE_API_KEY=your_key_here
+PINECONE_ENVIRONMENT=us-east-1-aws
+PINECONE_INDEX_NAME=dead-web-memory
+
+AWS_REGION=us-east-1
+FRONTEND_URL=https://your-amplify-domain.amplifyapp.com
+
+# From CDK deployment (Step 5)
+S3_BUCKET_NAME=your-bucket-name
+DYNAMODB_TABLE_NAME=your-table-name
+```
+
+#### Frontend (Amplify)
+Add in Amplify console → App settings → Environment variables:
+
+```bash
+VITE_API_URL=https://your-apprunner-url.us-east-1.awsapprunner.com
+```
+
+### Step 5: Deploy Infrastructure (Optional - for S3/DynamoDB)
 
 ```bash
 cd infrastructure
@@ -80,61 +211,114 @@ source venv/bin/activate
 pip install -r requirements.txt
 
 # Bootstrap CDK (first time only)
-cdk bootstrap --profile your-aws-profile
+cdk bootstrap
 
 # Deploy infrastructure
-cdk deploy --profile your-aws-profile
+cdk deploy
+
+# Note the outputs: bucket name and table name
+# Add these to App Runner environment variables
 ```
 
-### Step 2: Update Environment Variables
+### Step 6: Update CORS Settings
 
-After deployment, CDK will output resource names. Update your `.env`:
+Update `backend-server.js` to allow your Amplify domain:
+
+```javascript
+const cors = require('cors');
+
+app.use(cors({
+    origin: [
+        'http://localhost:5173',
+        'http://localhost:3000',
+        'https://your-app.amplifyapp.com'  // Add your Amplify domain
+    ],
+    credentials: true
+}));
+```
+
+Commit and push - App Runner will auto-deploy.
+
+### Step 7: Test Your Deployment
 
 ```bash
-# Add from CDK outputs
-S3_BUCKET_NAME=your-resurrection-bucket
-DYNAMODB_TABLE_NAME=your-resurrection-table
+# Test backend
+curl https://your-apprunner-url.us-east-1.awsapprunner.com/api/resurrections
+
+# Visit frontend
+# Open https://your-app.amplifyapp.com in browser
 ```
 
-### Step 3: Deploy Backend
+## Alternative: Serverless Backend with Lambda
 
-Option A: Deploy to AWS Lambda (recommended)
+If you prefer Lambda over App Runner:
+
+### Create Lambda Function
+
+1. Package backend:
 ```bash
-# Backend will be deployed as part of CDK stack
-# API Gateway endpoint will be in CDK outputs
+# Create deployment package
+npm install --production
+zip -r backend.zip . -x "*.git*" "frontend/*" "infrastructure/*"
 ```
 
-Option B: Deploy to EC2/ECS
+2. Create Lambda via AWS Console:
+   - Runtime: Node.js 18.x
+   - Upload `backend.zip`
+   - Handler: `backend-server.handler`
+   - Timeout: 30 seconds
+   - Memory: 512 MB
+
+3. Add API Gateway HTTP API trigger
+
+4. Update environment variables in Lambda console
+
+5. Modify `backend-server.js` for Lambda:
+
+```javascript
+// Add at the end of backend-server.js
+exports.handler = async (event, context) => {
+    // Lambda handler wrapper
+    const serverless = require('serverless-http');
+    return serverless(app)(event, context);
+};
+```
+
+## AWS Amplify Gen 2 (Modern Approach)
+
+For a fully integrated experience:
+
 ```bash
-# Build backend
-npm run build
+# Install Amplify Gen 2
+npm create amplify@latest
 
-# Deploy using your preferred method
-# Update CORS settings to allow your frontend domain
+# Follow prompts to set up:
+# - Authentication (optional)
+# - API (REST or GraphQL)
+# - Storage (S3)
+# - Database (DynamoDB)
+
+# Deploy everything
+npx ampx sandbox
 ```
 
-### Step 4: Deploy Frontend
+This creates a complete backend with type-safe APIs.
 
-Option A: AWS Amplify
-```bash
-cd frontend
-npm run build
+## Monitoring Your Deployment
 
-# Deploy dist/ folder to Amplify
-# Or connect GitHub repo for automatic deployments
-```
+### Amplify Frontend
+- View build logs: Amplify Console → Your App → Build history
+- Monitor traffic: CloudWatch → Amplify metrics
+- Custom domain: Amplify Console → Domain management
 
-Option B: S3 + CloudFront
-```bash
-cd frontend
-npm run build
+### App Runner Backend
+- View logs: App Runner Console → Logs tab
+- Monitor health: App Runner Console → Metrics
+- Auto-scaling: Automatically handled
 
-# Upload to S3
-aws s3 sync dist/ s3://your-frontend-bucket --profile your-aws-profile
-
-# Configure CloudFront distribution
-# Update CORS in backend to allow CloudFront domain
-```
+### CDK Infrastructure
+- CloudFormation: View stack status and resources
+- CloudWatch: Monitor Lambda, DynamoDB, S3 metrics
 
 ## Environment Variables Reference
 

@@ -12,6 +12,17 @@ Welcome to the complete documentation for the Echoes of the Dead Web project!
 
 **Recommended Path**: README → QUICKSTART → Try it out!
 
+## ☁️ AWS Deployment (New!)
+
+| Document | Purpose | Time to Read |
+|----------|---------|--------------|
+| **[AMPLIFY_QUICKSTART.md](AMPLIFY_QUICKSTART.md)** | Quick reference card | 3 min |
+| **[deploy-to-amplify.md](deploy-to-amplify.md)** | Step-by-step AWS guide | 10 min |
+| **[AWS_DEPLOYMENT_SUMMARY.md](AWS_DEPLOYMENT_SUMMARY.md)** | Complete deployment overview | 8 min |
+| **[DEPLOYMENT.md](DEPLOYMENT.md)** | All deployment options | 15 min |
+
+**Recommended Path**: AMPLIFY_QUICKSTART → deploy-to-amplify → Deploy!
+
 ## 🏆 Hackathon Submission
 
 | Document | Purpose | Audience |

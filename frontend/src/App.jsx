@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import './App.css';
 
-const API_URL = 'http://localhost:3001';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const WS_URL = API_URL.replace('https://', 'wss://').replace('http://', 'ws://');
 
 function App() {
     const [url, setUrl] = useState('');
@@ -15,7 +16,7 @@ function App() {
 
     useEffect(() => {
         // Connect to WebSocket for real-time updates
-        wsRef.current = new WebSocket('ws://localhost:3001');
+        wsRef.current = new WebSocket(WS_URL);
 
         wsRef.current.onmessage = (event) => {
             const data = JSON.parse(event.data);

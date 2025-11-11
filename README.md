@@ -44,6 +44,8 @@ Bring dead websites and lost internet knowledge back to life using Kiro's agenti
 
 ## 🚀 Quick Start
 
+### Local Development
+
 ```bash
 # Install dependencies
 npm install
@@ -52,13 +54,6 @@ cd frontend && npm install
 # Set up environment variables
 cp .env.example .env
 # Add your OpenAI/Anthropic API key and Pinecone credentials
-
-# Deploy AWS infrastructure (for storage & processing)
-cd infrastructure
-python -m venv venv
-venv\Scripts\activate  # Windows
-pip install -r requirements.txt
-cdk deploy --profile your-aws-profile
 
 # Start backend resurrection engine
 npm run backend
@@ -72,6 +67,44 @@ npm run dev
 # 2. Enable "Developer mode"
 # 3. Click "Load unpacked"
 # 4. Select the chrome_extension/ folder
+```
+
+### AWS Deployment
+
+**Quick Deploy to AWS Amplify + App Runner:**
+
+```bash
+# 1. Push to GitHub
+git push origin main
+
+# 2. Deploy backend (AWS App Runner Console)
+#    - Connect GitHub repo
+#    - Use apprunner.yaml config
+#    - Add environment variables
+
+# 3. Deploy frontend (AWS Amplify Console)
+#    - Connect GitHub repo
+#    - Use amplify.yml config
+#    - Add VITE_API_URL variable
+
+# 4. Deploy infrastructure (optional - for S3/DynamoDB)
+cd infrastructure
+python -m venv venv
+venv\Scripts\activate  # Windows
+pip install -r requirements.txt
+cdk bootstrap
+cdk deploy
+```
+
+**📚 Deployment Guides:**
+- [AMPLIFY_QUICKSTART.md](AMPLIFY_QUICKSTART.md) - Quick reference card
+- [deploy-to-amplify.md](deploy-to-amplify.md) - Step-by-step guide
+- [DEPLOYMENT.md](DEPLOYMENT.md) - Complete deployment documentation
+
+**Alternative: Serverless (Lambda)**
+```bash
+npm install -g serverless
+serverless deploy --stage prod
 ```
 
 ## 🏗️ Architecture

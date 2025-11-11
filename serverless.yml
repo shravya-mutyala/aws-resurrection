@@ -1,0 +1,68 @@
+service: echoes-backend
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ${opt:region, 'us-east-1'}
+  stage: ${opt:stage, 'prod'}
+  memorySize: 512
+  timeout: 30
+  
+  environment:
+    NODE_ENV: production
+    OPENAI_API_KEY: ${env:OPENAI_API_KEY}
+    ANTHROPIC_API_KEY: ${env:ANTHROPIC_API_KEY}
+    PINECONE_API_KEY: ${env:PINECONE_API_KEY}
+    PINECONE_ENVIRONMENT: ${env:PINECONE_ENVIRONMENT}
+    PINECONE_INDEX_NAME: ${env:PINECONE_INDEX_NAME}
+    FRONTEND_URL: ${env:FRONTEND_URL}
+    S3_BUCKET_NAME: ${env:S3_BUCKET_NAME, ''}
+    DYNAMODB_TABLE_NAME: ${env:DYNAMODB_TABLE_NAME, ''}
+  
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+          Resource: 
+            - arn:aws:s3:::${env:S3_BUCKET_NAME, 'echoes-bucket'}/*
+        - Effect: Allow
+          Action:
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:Query
+            - dynamodb:Scan
+          Resource:
+            - arn:aws:dynamodb:${self:provider.region}:*:table/${env:DYNAMODB_TABLE_NAME, 'echoes-table'}
+
+functions:
+  api:
+    handler: lambda-handler.handler
+    events:
+      - httpApi:
+          path: /{proxy+}
+          method: ANY
+      - httpApi:
+          path: /
+          method: ANY
+
+  websocket:
+    handler: lambda-handler.websocketHandler
+    events:
+      - websocket:
+          route: $connect
+      - websocket:
+          route: $disconnect
+      - websocket:
+          route: $default
+
+plugins:
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    httpPort: 3001
