@@ -14,7 +14,7 @@ Get the séance chamber running in 5 minutes!
 
 ```bash
 # Clone or navigate to project directory
-cd echoes-of-the-dead-web
+cd aws-resurrection
 
 # Install all dependencies
 npm install

@@ -14,3 +14,5 @@ run:
       value: "3001"
     - name: NODE_ENV
       value: "production"
+    - name: FRONTEND_URL
+      value: "https://main.d35ryv6n9vaw4f.amplifyapp.com"

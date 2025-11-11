@@ -194,7 +194,7 @@ serverless deploy --stage prod
 ## 🏗️ Project Structure
 
 ```
-echoes-of-the-dead-web/
+aws-resurrection/
 ├── .kiro/                          # Kiro configuration
 │   ├── hooks/                      # Agent automation
 │   │   ├── archive_rebuilder.hook.yaml

@@ -18,7 +18,7 @@
 3. **Source:**
    - Repository type: **Source code repository**
    - Connect to GitHub (authorize AWS)
-   - Select your repository: `echoes-of-the-dead-web`
+   - Select your repository: `aws-resurrection`
    - Branch: `main`
 4. **Deployment settings:**
    - Deployment trigger: **Automatic**
@@ -51,7 +51,7 @@
 3. **Connect repository:**
    - Select **GitHub**
    - Authorize AWS Amplify
-   - Select repository: `echoes-of-the-dead-web`
+   - Select repository: `aws-resurrection`
    - Branch: `main`
 4. **Build settings:**
    - Amplify will auto-detect `amplify.yml`
@@ -72,7 +72,7 @@
          files:
            - '**/*'
      ```
-5. **App name:** `echoes-of-the-dead-web`
+5. **App name:** `aws-resurrection`
 6. Click **"Save and deploy"**
 7. Wait 5-10 minutes for build
 8. **Copy your Amplify URL** (e.g., `https://main.d1234abcd.amplifyapp.com`)

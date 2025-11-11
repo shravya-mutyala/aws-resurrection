@@ -44,7 +44,7 @@ Use this checklist to ensure a smooth deployment to AWS Amplify.
 - [ ] Click "Create service"
 - [ ] Select "Source code repository"
 - [ ] Connect to GitHub (authorize AWS)
-- [ ] Select repository: `echoes-of-the-dead-web`
+- [ ] Select repository: `aws-resurrection`
 - [ ] Select branch: `main`
 - [ ] Deployment trigger: Automatic
 - [ ] Configuration: Use `apprunner.yaml`
@@ -80,14 +80,14 @@ Use this checklist to ensure a smooth deployment to AWS Amplify.
 - [ ] Click "New app" → "Host web app"
 - [ ] Select "GitHub"
 - [ ] Authorize AWS Amplify
-- [ ] Select repository: `echoes-of-the-dead-web`
+- [ ] Select repository: `aws-resurrection`
 - [ ] Select branch: `main`
 
 ### Build Configuration
 - [ ] Amplify auto-detects `amplify.yml`
 - [ ] Verify `baseDirectory: frontend/dist`
 - [ ] Verify build command: `npm run build`
-- [ ] App name: `echoes-of-the-dead-web`
+- [ ] App name: `aws-resurrection`
 
 ### Environment Variables
 - [ ] Add `VITE_API_URL` with App Runner URL from above

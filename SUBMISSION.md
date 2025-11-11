@@ -175,7 +175,7 @@ npm run dev
 ## 📁 Repository Structure
 
 ```
-echoes-of-the-dead-web/
+aws-resurrection/
 ├── .kiro/
 │   ├── hooks/
 │   │   ├── archive_rebuilder.hook.yaml
