@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Test Wayback Machine Iframe</title>
+    <style>
+        body {
+            margin: 20px;
+            font-family: monospace;
+        }
+
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: 2px solid #00ff88;
+        }
+
+        .test {
+            margin: 20px 0;
+            padding: 10px;
+            background: #1a1a2e;
+            color: #00ff88;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🪦 Testing Wayback Machine Iframe Embedding</h1>
+
+    <div class="test">
+        <h2>Test 1: Normal Wayback URL (will likely fail)</h2>
+        <iframe src="http://web.archive.org/web/19961017235908/http://www2.yahoo.com/"></iframe>
+    </div>
+
+    <div class="test">
+        <h2>Test 2: With id_ flag (should work)</h2>
+        <iframe src="http://web.archive.org/web/19961017235908id_/http://www2.yahoo.com/"></iframe>
+    </div>
+
+    <div class="test">
+        <h2>Test 3: With if_ flag (frameless mode)</h2>
+        <iframe src="http://web.archive.org/web/19961017235908if_/http://www2.yahoo.com/"></iframe>
+    </div>
+
+    <script>
+        // Log iframe load events
+        document.querySelectorAll('iframe').forEach((iframe, index) => {
+            iframe.onload = () => console.log(`Iframe ${index + 1} loaded successfully`);
+            iframe.onerror = (e) => console.error(`Iframe ${index + 1} failed:`, e);
+        });
+    </script>
+</body>
+
+</html>
