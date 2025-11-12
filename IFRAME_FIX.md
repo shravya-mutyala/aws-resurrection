@@ -1,20 +1,37 @@
 # 🪦 Iframe Fix for Amplify Deployment
 
 ## The Problem
-The resurrected websites weren't showing in production because AWS Amplify sets strict Content Security Policy (CSP) headers that block iframes from external domains like `web.archive.org`.
+The resurrected websites weren't showing in production because:
+1. AWS Amplify sets strict Content Security Policy (CSP) headers that block iframes from external domains
+2. The Wayback Machine blocks embedding by default unless you use the special `id_` flag
 
 ## The Solution
 
-### 1. Updated `amplify.yml` with Custom Headers
+### 1. Use Wayback Machine's `id_` Flag (CRITICAL!)
+Changed the snapshot URL format from:
+```
+http://web.archive.org/web/19961017235908/http://www2.yahoo.com/
+```
+To:
+```
+http://web.archive.org/web/19961017235908id_/http://www2.yahoo.com/
+```
+
+The `id_` flag tells the Wayback Machine to serve content in "identity" mode, which:
+- Removes the Wayback toolbar
+- Disables URL rewriting that breaks iframes
+- Allows embedding in iframes
+
+### 2. Updated `amplify.yml` with Custom Headers
 Added CSP headers that allow iframes from the Wayback Machine:
 - `frame-src 'self' https://web.archive.org http://web.archive.org`
 
-### 2. Enhanced Iframe Security
+### 3. Enhanced Iframe Security
 Added sandbox attributes to the iframe for better security:
-- `sandbox="allow-same-origin allow-scripts allow-popups allow-forms"`
-- `referrerPolicy="no-referrer"`
+- `sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-top-navigation"`
+- `loading="eager"` for faster loading
 
-### 3. Added Fallback Link
+### 4. Added Fallback Link
 If the iframe still doesn't load (some Wayback snapshots have their own CSP), users can click a link to view it directly.
 
 ## Deployment Steps
@@ -46,7 +63,11 @@ If the `amplify.yml` customHeaders don't work, you can also set headers in the A
 
 ## Why This Works
 
-The Wayback Machine serves archived content from `web.archive.org`. By adding this domain to the `frame-src` directive in the CSP header, we explicitly allow iframes from this source while maintaining security for other resources.
+The Wayback Machine has two modes:
+1. **Normal mode** - Includes toolbar, rewrites URLs, blocks embedding
+2. **Identity mode (`id_`)** - Raw content, no toolbar, embeddable
+
+By using the `id_` flag in the URL, we get the raw archived content that can be embedded in iframes. Combined with the CSP headers that allow `web.archive.org`, the ghosts can now properly manifest!
 
 ## Troubleshooting
 
