@@ -80,7 +80,7 @@ app.post('/api/resurrect', async (req, res) => {
             url: row[1],
             statusCode: row[2],
             mimeType: row[3],
-            snapshotUrl: `${WAYBACK_SNAPSHOT_URL}/${row[0]}/${row[1]}`
+            snapshotUrl: `${WAYBACK_SNAPSHOT_URL}/${row[0]}id_/${row[1]}`
         }));
 
         if (snapshots.length === 0) {
