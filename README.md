@@ -25,11 +25,34 @@ Bring dead websites and lost internet knowledge back to life using Kiro's agenti
 
 ## 🪦 Resurrection Features
 
-- **Chrome Extension** - "Summon This Page" button on dead links
-- **AI Reconstruction** - Rebuilds layouts, content, and context from Wayback snapshots
-- **Ghost Chat** - Converse with resurrected websites using LLM + historical data
-- **Vector Memory** - Pinecone stores semantic embeddings of all resurrected content
-- **Gothic UI** - Old-school CRT terminal aesthetic with ghost cursor effects
+### 🔮 Mystical Resurrection Ritual
+Transform boring loading screens into spectacular séances:
+- **Rotating Pentagram** - Glowing green star with pulsing effects
+- **Runic Circle** - 12 ancient symbols spinning in reverse
+- **Floating Code Fragments** - Digital spirits (`<html>`, `{}`, `404`, `💀`)
+- **Energy Pulses** - Expanding mystical waves
+- **Cycling Messages** - "Summoning spirits from the Wayback Machine..."
+
+### 💀 Digital Autopsy Report
+Comprehensive post-mortem analysis of dead websites:
+- **Vital Statistics** - Domain, era, age at death, last seen date, snapshot count
+- **Tech Stack Detection** - Auto-identifies technologies (PHP, Flash, MySQL, etc.)
+- **Cause of Death** - Intelligent analysis (Abandoned, Domain Expiration, Migration)
+- **Spirit Essence** - Personality assessment with animated strength meter
+- **Official Certification** - Rotating seal and examiner signature
+
+### 👻 Ghost Interaction
+- **AI-Powered Chat** - Converse with resurrected websites using LLM + historical data
+- **Wayback Viewer** - Embedded iframe showing actual historical snapshots
+- **Resurrection Gallery** - Browse previously summoned sites
+- **Success Animation** - Triumphant celebration when resurrection completes
+
+### 🎨 Gothic UI
+- **CRT Terminal Theme** - Phosphor green on deep black
+- **Scanline Effects** - Authentic retro monitor feel
+- **Glitch Animations** - Title glitches and flickers
+- **Floating Ghosts** - Animated emoji background
+- **Pure CSS3** - All animations GPU-accelerated, 60fps, no libraries!
 
 ## 📚 Documentation
 
@@ -143,15 +166,26 @@ serverless deploy --stage prod
 └─────────────────────────────────────────────┘
 ```
 
-## 🎮 Features
+## 🎮 User Experience
 
+### The Resurrection Journey
+1. **Enter URL** - Type any dead website (myspace.com, geocities.com, vine.co)
+2. **Summon Ghost** - Click the glowing "👻 Summon" button
+3. **Watch Ritual** - Pentagram spins, runes glow, code fragments float (10-15s)
+4. **Celebrate Success** - Full-screen animation with checkmark and energy bursts (3s)
+5. **Read Autopsy** - Comprehensive analysis with tech stack and cause of death
+6. **Explore Ghost** - View the actual site in Wayback Machine iframe
+7. **Chat with Spirit** - Ask questions about the site's history and content
+
+### Key Features
 - **One-Click Resurrection**: Enter any dead URL and watch it come back to life
-- **AI Reconstruction**: Fills gaps in Wayback snapshots using contextual inference
-- **Ghost Conversations**: Chat with resurrected sites about their history and content
-- **Semantic Memory**: Vector embeddings enable intelligent Q&A about dead content
-- **Visual Time Travel**: Browse through historical snapshots with smooth transitions
-- **Personality Engine**: Each ghost has unique personality based on original site content
+- **Spectacular Animations**: Every loading screen is a mystical experience
+- **Intelligent Analysis**: Auto-detects era, tech stack, and cause of death
+- **Ghost Conversations**: Chat with resurrected sites about their history
+- **Visual Time Travel**: Browse through historical snapshots
+- **Personality Engine**: Each ghost has unique personality based on original content
 - **Resurrection Gallery**: Browse previously summoned sites
+- **Pure Performance**: All animations are CSS3, GPU-accelerated, 60fps
 
 ## 🎃 Kiro Features Demonstrated
 
